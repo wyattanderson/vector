@@ -109,7 +109,10 @@ kubernetesLogsSource:
   enabled: true
   # The name to use for the "built-in" kubernetes logs source.
   sourceId: kubernetes_logs
-  # Raw TOML config to embed at the kubernetes logs source.
+  # Additional config to embed at the kubernetes logs source.
+  config: {}
+    # option: "value"
+  # Raw TOML config to embed at the kubernetes logs source (deprecated).
   rawConfig: null
 
 # Sources to add to the generated `vector` config (besides "built-in" kubernetes
@@ -117,6 +120,8 @@ kubernetesLogsSource:
 sources: {}
   # source_name:
   #   type: "source_type"
+  #   config:
+  #     option: "value"
   #   rawConfig: |
   #     option = "value"
 
@@ -125,6 +130,8 @@ transforms: {}
   # transform_name:
   #   type: "transform_type"
   #   inputs: ["input1", "input2"]
+  #   config:
+  #     option: "value"
   #   rawConfig: |
   #     option = "value"
 
@@ -133,5 +140,7 @@ sinks: {}
   # sink_name:
   #   type: "sink_type"
   #   inputs: ["input1", "input2"]
+  #   config:
+  #     option: "value"
   #   rawConfig: |
   #     option = "value"

@@ -23,19 +23,29 @@ data:
       timestamp_key = "{{ .timestampKey }}"
     {{- end }}
 
-    {{- if .Values.kubernetesLogsSource.enabled }}
+    {{- with .Values.kubernetesLogsSource }}
+    {{- if .enabled }}
     # Ingest logs from Kubernetes.
-    [sources.{{ .Values.kubernetesLogsSource.sourceId }}]
+    [sources.{{ .sourceId }}]
       type = "kubernetes_logs"
 
-      {{- with .Values.kubernetesLogsSource.rawConfig }}
+      {{- if .config }}
+      {{- tuple .sourceId .config | include "libvector.vectorSourceConfig" | nindent 4 -}}
+      {{- end }}
+
+      {{- with .rawConfig }}
       {{- . | nindent 6 }}
       {{- end }}
+    {{- end }}
     {{- end }}
 
     {{- range $sourceId, $source := .Values.sources }}
     [sources.{{ $sourceId }}]
       type = "{{ $source.type }}"
+
+      {{- if $source.config }}
+      {{- tuple $sourceId $source.config | include "libvector.vectorSourceConfig" | nindent 4 -}}
+      {{- end }}
 
       {{- with $source.rawConfig }}
       {{- . | nindent 6 }}
@@ -47,6 +57,10 @@ data:
       type = "{{ $transform.type }}"
       inputs = {{ $transform.inputs | toJson }}
 
+      {{- if $transform.config }}
+      {{- tuple $transformId $transform.config | include "libvector.vectorSourceConfig" | nindent 4 -}}
+      {{- end }}
+
       {{- with $transform.rawConfig }}
       {{- . | nindent 6 }}
       {{- end }}
@@ -56,6 +70,10 @@ data:
     [sinks.{{ $sinkId }}]
       type = "{{ $sink.type }}"
       inputs = {{ $sink.inputs | toJson }}
+
+      {{- if $sink.config }}
+      {{- tuple $sinkId $sink.config | include "libvector.vectorSourceConfig" | nindent 4 -}}
+      {{- end }}
 
       {{- with $sink.rawConfig }}
       {{- . | nindent 6 }}
