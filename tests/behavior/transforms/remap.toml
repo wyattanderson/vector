@@ -1299,3 +1299,28 @@
       "parts.error_reason.equals" = "<null>"
       "parts.classification.equals" = "<null>"
       "parts.classification_reason.equals" = "<null>"
+
+[transforms.remap_metrics]
+  inputs = []
+  type = "remap"
+  source = """
+      .tags.host = "ook"
+      .tags.name = .name
+      .tags.namespace = .namespace
+   """
+[[tests]]
+  name = "remap_metrics"
+  [tests.input]
+    insert_at = "remap_metrics"
+    type = "metric"
+    [tests.input.metric]
+      name = "example counter"
+      namespace = "zork"
+      kind = "absolute"
+      counter.value = 1.0
+  [[tests.outputs]]
+    extract_from = "remap_metrics"
+    [[tests.outputs.conditions]]
+      "name.equals" = "example counter"
+      "namespace.equals" = "zork"
+      "host.equals" = "ook"
