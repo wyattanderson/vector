@@ -42,6 +42,7 @@ default = [
     "downcase",
     "ends_with",
     "exists",
+    "find",
     "flatten",
     "floor",
     "format_number",
@@ -93,6 +94,7 @@ del = []
 downcase = []
 ends_with = []
 exists = []
+find = ["regex"]
 flatten = []
 floor = []
 format_number = ["rust_decimal"]
@@ -102,7 +104,7 @@ ip_subnet = ["lazy_static", "regex"]
 ip_to_ipv6 = []
 ipv6_to_ipv4 = []
 log = ["tracing"]
-match = []
+match = ["regex"]
 md5 = ["md-5", "hex"]
 merge = []
 now = []
